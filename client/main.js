@@ -2,7 +2,7 @@ import { Template } from 'meteor/templating';
 
 import './main.html';
 
-//Router.configure({	
+//Router.configure({
 //	layoutTemplate: 'ApplicationLayout'
 //});
 
@@ -11,14 +11,14 @@ Router.route('/', function() {
 	this.render("website_list")
 });
 
-Router.route('/websites/:_id', function () { 
-  this.render("website", {
+Router.route('/website/:_id', function () {
+  this.render("website_details", {
     data:function(){
       return Websites.findOne({_id:this.params._id});
     }
   });
 });
-// template helpers 
+// template helpers
 	/////
 
 	// helper function that returns all available websites
@@ -28,16 +28,12 @@ Router.route('/websites/:_id', function () {
 		},
 
 	});
-
-	Template.website_item.helpers({
-		formattedDate:function(){
+Template.registerHelper("formattedDate", function (){
 			return moment(this.createdOn).format("DD/MM/YY");
-		}
-
 	});
 
 	/////
-	// template events 
+	// template events
 	/////
 
 	Template.website_item.events({
@@ -46,13 +42,13 @@ Router.route('/websites/:_id', function () {
 			// (this is the data context for the template)
 			var website_id = this._id;
 			console.log("Up voting website with id "+website_id);
-			// put the code in here to add a vote to a website!			
+			// put the code in here to add a vote to a website!
 			if(!this.up) {
 				this.up = 0;
-			}		
+			}
 			Websites.update({_id:website_id}, {$set: {up:this.up+1}});
 			return false;// prevent the button from reloading the page
-		}, 
+		},
 		"click .js-downvote":function(event){
 
 			// example of how you can access the id for the website in the database
@@ -63,7 +59,7 @@ Router.route('/websites/:_id', function () {
 			// put the code in here to remove a vote from a website!
 			if(!this.down) {
 				this.down = 0;
-			}	
+			}
 			Websites.update({_id:website_id}, {$set: {down:this.down+1}});
 			return false;// prevent the button from reloading the page
 		}
@@ -72,7 +68,7 @@ Router.route('/websites/:_id', function () {
 	Template.website_form.events({
 		"click .js-toggle-website-form":function(event){
 			$("#website_form").toggle('slow');
-		}, 
+		},
 		"submit .js-save-website-form":function(event){
 
 			// here is an example of how to get the url out of the form:
@@ -82,7 +78,7 @@ Router.route('/websites/:_id', function () {
 			var title = event.target.title.value;
 			var description = event.target.description.value;
 
-			//  put your website saving code in here!	
+			//  put your website saving code in here!
 
 			if(Meteor.user()) {
 				Websites.insert({
@@ -100,5 +96,3 @@ Router.route('/websites/:_id', function () {
 
 		}
 	});
-
-
