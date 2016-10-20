@@ -24,3 +24,4 @@ accounts-password
 twbs:bootstrap
 momentjs:moment
 iron:router
+http

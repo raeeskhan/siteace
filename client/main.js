@@ -7,8 +7,8 @@ import './main.html';
 //});
 
 Router.route('/', function() {
-	this.render("website_form");
-	this.render("website_list")
+	//this.render("website_form");
+	this.render("main_page")
 });
 
 Router.route('/website/:_id', function () {
@@ -28,9 +28,11 @@ Router.route('/website/:_id', function () {
 		},
 
 	});
-Template.registerHelper("formattedDate", function (){
+	Template.registerHelper("formattedDate", function (){
 			return moment(this.createdOn).format("DD/MM/YY");
 	});
+
+
 
 	/////
 	// template events
@@ -75,12 +77,21 @@ Template.registerHelper("formattedDate", function (){
 
 			var url = event.target.url.value;
 			console.log("The url they entered is: "+url);
-			var title = event.target.title.value;
-			var description = event.target.description.value;
+			//var title = event.target.title.value;
+			//var description = event.target.description.value;
 
-			//  put your website saving code in here!
+			//  put your website saving code in here!	
 
+			
 			if(Meteor.user()) {
+				Meteor.call("getUrlData", url, function(error, results){
+				
+				var temp = $('<div></div>');
+				temp.html(results.content);
+				var title = $('title', temp).text();
+				console.log("the Now: "+title);
+				var description = $('meta[name="description"]',temp).attr('content');
+
 				Websites.insert({
 					title:title,
 					url:url,
@@ -90,9 +101,17 @@ Template.registerHelper("formattedDate", function (){
             		down: 0
 
 				});
+			 });	
 			}
 
 			return false;// stop the form submit from reloading the page
 
 		}
 	});
+
+	Template.website_details.rendered = function() {		
+		$(".js-details").text("Main");
+		$(".js-details").attr('href', '/');	
+
+	};
+	

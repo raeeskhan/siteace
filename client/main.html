@@ -16,6 +16,11 @@
   </nav>
 
 </body>
+<template name="main_page">
+  {{> website_form}}
+  {{> website_list}}
+  
+</template>
 
 <template name="website_form">
   <a class="btn btn-default js-toggle-website-form" href="#">
@@ -45,16 +50,16 @@
 <template name="website_list">
   <ul class="icon">
   {{#each websites}}
-  {{>website_item}}
+  <li>{{>website_item}}</li>
   {{/each}}
  </ul>
 </template>
 
 <!-- template that displays individual website entries -->
 <template name="website_item">
-  <li class="info">
+  
   <a href="{{url}}">{{title}}</a>
-  <a href="/website/{{_id}}" class="label label-info js-opendetails">Details</a>
+  <a href="/website/{{_id}}" class="label label-info js-details">Details</a>
   <p>
     {{description}}
   </p>
@@ -66,22 +71,11 @@
     <span class="glyphicon glyphicon-arrow-down" aria-hidden="true">{{down}}</span>
   </a>
   <!-- you will be putting your up and down vote buttons in here! -->
-</li>
+
 </template>
 <!--template that diplays details about a website-->
 <template name="website_details">
   <div class="container">
-    <a href="{{url}}">{{title}}</a>
-    <a href="/website/{{_id}}" class="label label-info">Details</a>
-    <p>
-      {{description}}
-    </p>
-    <p> Added On:{{formattedDate}}</p>
-    <a href="#" class="btn btn-default js-upvote">
-      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true">{{up}}</span>
-    </a>
-    <a href="#" class="btn btn-default js-downvote">
-      <span class="glyphicon glyphicon-arrow-down" aria-hidden="true">{{down}}</span>
-    </a>
+    {{> website_item}}
 </div>
 </template>

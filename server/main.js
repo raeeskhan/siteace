@@ -1,5 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-
+Meteor.methods({
+ getUrlData:function(url){
+    this.unblock();
+    return HTTP.call('Get', url, {"npmRequestOptions" : {"gzip" : true}});
+ }
+});
 Meteor.startup(() => {
   // code to run on server at startup
 //});
