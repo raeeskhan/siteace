@@ -18,6 +18,11 @@ Router.route('/website/:_id', function () {
     }
   });
 });
+
+Accounts.ui.config({
+  passwordSignupFields: "USERNAME_AND_EMAIL"
+
+});
 // template helpers
 	/////
 
@@ -29,12 +34,18 @@ Router.route('/website/:_id', function () {
 
 	});
 	Template.registerHelper("formattedDate", function (){
+			//console.log("its user:"+this.comment);
 			return moment(this.createdOn).format("DD/MM/YY");
+
 	});
 
+	Template.comment_list.helpers({
+		comments:function(){
+			return Comments.find({website_id:this._id});
+		}
+	});
 
-
-	/////
+		/////
 	// template events
 	/////
 
@@ -108,6 +119,25 @@ Router.route('/website/:_id', function () {
 
 		}
 	});
+
+	Template.comment_form.events({
+		"submit .js-save-comment-form":function(event) {
+				var comment = event.target.comment.value;
+				console.log("You commented: "+comment);
+				var website_id = this._id;
+				console.log("for website id: "+website_id);
+				var user = Meteor.user().username;
+				console.log("user: "+user);
+				if(Meteor.user()) {
+
+					Comments.insert({website_id:website_id, user:user, comment:comment, createdOn: new Date()});
+
+				   }
+
+				return false;
+
+		}
+	})
 
 	Template.website_details.rendered = function() {		
 		$(".js-details").text("Main");

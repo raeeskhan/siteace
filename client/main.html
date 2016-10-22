@@ -18,8 +18,7 @@
 </body>
 <template name="main_page">
   {{> website_form}}
-  {{> website_list}}
-  
+  {{> website_list}}  
 </template>
 
 <template name="website_form">
@@ -76,6 +75,32 @@
 <!--template that diplays details about a website-->
 <template name="website_details">
   <div class="container">
-    {{> website_item}}
+    {{> website_item}} <br>
+    {{> comment_list}} <br>
+    {{> comment_form}}
 </div>
+</template>
+<template name="comment_form">
+  <form class="js-save-comment-form">
+    <div class="form-group">
+      <label for="comment">Comment</label>
+      <input type="text" class="form-control" id="comment" placeholder="Type your comment here">
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form> 
+</template>
+
+<template name="comment_list"> 
+  <br>
+  <h3>Users Comments</h3>
+  <ul> 
+  {{#each comments}}  
+    <li>{{> comment_item}}</li>   
+  {{/each}}
+  </ul>      
+</template>
+<template name="comment_item">
+  <label> {{user}} </label> on 
+  {{formattedDate}}
+  <p>{{comment}}</p>  
 </template>
